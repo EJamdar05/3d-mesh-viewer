@@ -6,7 +6,15 @@
 /*
 setup()
     ~Setup will load in all configurations for the 3D model viewer
- */
+    ~face data is read from the obj file via helper function
+    ~GUI is setup with options such as
+        ~turn on and off wireframes
+        ~Show total number of verticies and faces
+        ~Show total size in KB
+        ~Toggle slider to show adjacent tringles with shared verticies
+        ~Load model from path (provide string)
+    
+*/
 void ofApp::setup(){
     toggleSubmit = false;
 
@@ -36,10 +44,7 @@ void ofApp::setup(){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::update(){
 
-}
 
 /*/
  loadModel()
@@ -50,19 +55,33 @@ void ofApp::update(){
     ~draws model
  */
 void ofApp::loadModel(){
+    //clear the verticiesList and triangleInd of old data
     triangle.vertList.clear();
     triangle.triangleInd.clear();
+    //reset the total memory
     triangle.totalSize = 0;
+    //set the new path
     triangle.pathToFile = pathField;
+    //load and read the file
     triangle.readFile();
+    //finally, draw the model
     draw();
 }
 
 //--------------------------------------------------------------
+/*
+draw()
+    ~draws at every frame
+    ~grid is setup first
+    ~model is assembled by verticiesList indexed by triangleVert values
+    ~draws adjacent verticies based off selected triangle if toggled
+    ~wireframe can be toggled
+    ~draw string noting the loaded model path
+ 
+ */
 void ofApp::draw(){
     camera.begin();
     
-
     //grid setup
     ofPushMatrix();
     ofSetBackgroundColor(ofColor::grey);
@@ -70,8 +89,6 @@ void ofApp::draw(){
     ofRotateDeg(90);
     ofDrawGridPlane();
     ofPopMatrix();
-    
-    
     ofSetColor(ofColor::white);
     
     //triangleList and verticiesList will hold a copy of the triangleInd and vertList from Mesh class
@@ -114,7 +131,7 @@ void ofApp::draw(){
     }
     
     ofSetColor(ofColor::green);
-    //let user know what model was loaded 
+    //let user know what model was loaded
     ofDrawBitmapString("Loaded: "+triangle.pathToFile, 10, 10);
 
 }
@@ -135,56 +152,6 @@ void ofApp::keyPressed(int key){
         default:
             cout<<"Not recognized input"<<endl;
     }
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){
-
 }
 
 /**
@@ -212,16 +179,16 @@ void ofApp::Mesh::readFile(){
         if(token[0] == "v"){ //if verticies identified
             addVert(stof(token[1]), stof(token[2]), stof(token[3])); //add vert
             totalVerticies++; //append to totalVerticies
+            total += sizeof(float) * 3; //add to the memory of model
         }else if (token[0] == "f"){ //if faces identified
             totalFaces+=1; //add to totalfaces
             addTriangle(stoi(token[1]), stoi(token[2]), stoi(token[3])); //conver string to int
+            total += sizeof(int) * 3; //add to the memory of model
         }
             
     }
     //size of verticies and faces in kb added and assigned to totalSize
-    total = sizeof(int) * totalVerticies;
-    total += sizeof(int) * totalFaces;
-    totalSize = total;
+    totalSize = total * 0.001;
     
 }
 

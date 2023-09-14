@@ -6,42 +6,28 @@
 class ofApp : public ofBaseApp{
 
 	public:
-		void setup();
-		void update();
-		void draw();
-
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
-        void loadModel();
+        //methods for OpenFrameworks
+		void setup(); //initilization
+		void draw(); //draw at every frame
+		void keyPressed(int key); //key press handling
+        void loadModel(); //loadModel will reset data attr and load new model
     
-        ofEasyCam camera;
-        ofLight spotlight;
-        ofParameter<string> pathField;
+        ofEasyCam camera; //camera for the scene
+        ofParameter<string> pathField; //holds path to file
     
-        ofxIntSlider triangleSlider;
-        ofxVec2Slider center;
-        ofxToggle filled;
-        ofxButton submit;
-        ofxToggle toggleWireframe;
-        ofxLabel triangleField;
-        ofxLabel verticiesField;
-        ofxLabel adjacentTitle;
-        ofxLabel label;
-        ofxLabel size;
-        ofxPanel gui;
+        //GUI elements
+        ofxIntSlider triangleSlider; //slider to show shared verticies
+        ofxButton submit; //submit button for loading a new model
+        ofxToggle toggleWireframe; //wireframe toggle
+        ofxLabel triangleField; //shows total triangle count from model
+        ofxLabel verticiesField; //shows total verticies from model
+        ofxLabel adjacentTitle; //title seperator
+        ofxLabel size; //shows total size of the model
+        ofxPanel gui; //gui panel
 
-        bool bHide;
-        bool toggleSubmit;
-        bool initLoad = false;
+        bool bHide; //toggle for hiding gui
+        bool toggleSubmit; //deprecated
+        bool initLoad = false; //redundant
 
         class Mesh{
             public:
@@ -57,8 +43,6 @@ class ofApp : public ofBaseApp{
                 void outputVertVector();
                 void outputTriangleVector();
                 string pathToFile = "/Users/eshaqjamdar/Downloads/61ftqcfe3d34-knife/knife.obj";
-            
-            
         };
         Mesh triangle;
     

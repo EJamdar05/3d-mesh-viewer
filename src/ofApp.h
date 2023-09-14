@@ -21,38 +21,42 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+        void loadModel();
     
         ofEasyCam camera;
         ofLight spotlight;
+        ofParameter<string> pathField;
     
-        ofxFloatSlider radius;
-        ofxColorSlider color;
+        ofxIntSlider triangleSlider;
         ofxVec2Slider center;
-        ofxIntSlider circleResolution;
         ofxToggle filled;
-        ofxToggle sneed;
-        ofxLabel sneed1;
-        ofxLabel sneed2;
-        ofxButton twoCircles;
-        ofxButton ringButton;
-        ofxLabel screenSize;
+        ofxButton submit;
+        ofxToggle toggleWireframe;
+        ofxLabel triangleField;
+        ofxLabel verticiesField;
+        ofxLabel adjacentTitle;
         ofxLabel label;
-
+        ofxLabel size;
         ofxPanel gui;
 
-        ofSoundPlayer ring;
         bool bHide;
+        bool toggleSubmit;
+        bool initLoad = false;
 
         class Mesh{
             public:
                 std::vector<glm::vec3> vertList;
                 std::vector<glm::vec3> triangleInd;
-            
+                int totalVerticies = 0;
+                int totalFaces = 0;
+                int totalSize = 0;
+                int dblSize = sizeof(double);
                 void addVert(double x, double y, double z);
                 void addTriangle(int i1, int i2, int i3);
                 void readFile();
                 void outputVertVector();
                 void outputTriangleVector();
+                string pathToFile = "/Users/eshaqjamdar/Downloads/61ftqcfe3d34-knife/knife.obj";
             
             
         };
